@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { Trash2 } from "lucide-react";
 
 type Field = {
   input: string;
@@ -9,16 +11,10 @@ type Field = {
 };
 
 export default function Form() {
-  const [fields, setFields] = useState<Field[]>([
-    { input: "", select: "" },
-  ]);
+  const [fields, setFields] = useState<Field[]>([{ input: "", select: "" }]);
   const [errors, setErrors] = useState<any>({});
 
-  const handleChange = (
-    index: number,
-    field: keyof Field,
-    value: string
-  ) => {
+  const handleChange = (index: number, field: keyof Field, value: string) => {
     const updated = [...fields];
     updated[index][field] = value;
     setFields(updated);
@@ -42,102 +38,86 @@ export default function Form() {
     }
   };
 
-  const addField = () => {
-    setFields([...fields, { input: "", select: "" }]);
-  };
-
-  const deleteField = (index: number) => {
-    const updated = fields.filter((_, i) => i !== index);
-    setFields(updated);
-  };
+  const addField = () => setFields([...fields, { input: "", select: "" }]);
+  const deleteField = (index: number) => setFields(fields.filter((_, i) => i !== index));
 
   return (
-    <div className="p-6 max-w-xl mx-auto">
-      <form onSubmit={handleSubmit} className="space-y-4">
+    <div className="p-6 max-w-2xl mx-auto">
+      <h2 className="text-2xl font-bold mb-4 text-center">Form</h2>
+      <form onSubmit={handleSubmit} className="space-y-4 bg-white dark:bg-gray-900 p-6 rounded-lg shadow-md">
         {fields.map((f, i) => (
-          <div key={i} className="flex items-start gap-3">
-            <div>
+          <div key={i} className="flex flex-wrap md:flex-nowrap items-start gap-3">
+            <div className="flex-1">
               <input
                 type="text"
                 value={f.input}
-                onChange={(e) =>
-                  handleChange(i, "input", e.target.value)
-                }
-                className="border p-2 rounded w-40"
+                onChange={(e) => handleChange(i, "input", e.target.value)}
                 placeholder="Type here"
+                className="w-full  text-sm sm:text-base p-2 rounded border border-gray-300 dark:border-gray-700 focus:ring-2 focus:ring-blue-400 focus:outline-none dark:bg-gray-800 dark:text-white transition"
               />
-              {errors[`input-${i}`] && (
-                <p className="text-red-500 text-sm">
-                  {errors[`input-${i}`]}
-                </p>
-              )}
+              {errors[`input-${i}`] && <p className="text-red-500 text-sm mt-1">{errors[`input-${i}`]}</p>}
             </div>
 
-            <div>
+            <div className="flex-1">
               <select
                 value={f.select}
-                onChange={(e) =>
-                  handleChange(i, "select", e.target.value)
-                }
-                className="border p-2 rounded w-32"
+                onChange={(e) => handleChange(i, "select", e.target.value)}
+                className="w-full  text-sm sm:text-base p-2 rounded border border-gray-300 dark:border-gray-700 focus:ring-2 focus:ring-blue-400 focus:outline-none dark:bg-gray-800 dark:text-white transition"
               >
-                <option value="" className="bg-gray-200 text-gray-800">Select</option>
-                <option value="One" className="bg-gray-200 text-gray-800">One</option>
-                <option value="Two" className="bg-gray-200 text-gray-800">Two</option>
+                <option value="">Select</option>
+                <option value="One">One</option>
+                <option value="Two">Two</option>
               </select>
-              {errors[`select-${i}`] && (
-                <p className="text-red-500 text-sm">
-                  {errors[`select-${i}`]}
-                </p>
-              )}
+              {errors[`select-${i}`] && <p className="text-red-500 text-sm mt-1">{errors[`select-${i}`]}</p>}
             </div>
 
             <button
               type="button"
               onClick={() => deleteField(i)}
-              className="bg-red-500 text-white px-2 py-1 rounded"
+              className="bg-red-500 hover:bg-red-600 text-white px-3 py-2.5 rounded transition"
             >
-              Delete
+              <Trash2 size={16} />
             </button>
           </div>
         ))}
 
-        <button
-          type="button"
-          onClick={addField}
-          className="bg-blue-500 text-white px-3 py-1 rounded"
-        >
-          +
-        </button>
+        <div className="flex gap-3 mt-2">
+          <button
+            type="button"
+            onClick={addField}
+            className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded transition"
+          >
+            + Add Field
+          </button>
 
-        <button
-          type="submit"
-          className="block bg-green-600 text-white px-4 py-2 rounded"
-        >
-          Submit
-        </button>
+          <button
+            type="submit"
+            className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded transition"
+          >
+            Submit
+          </button>
+        </div>
       </form>
 
-      {/* Print form state */}
-      <h3 className="mt-6 font-semibold text-lg">Form State (Table)</h3>
-
-      <table className="border mt-2 w-full">
-        <thead>
-          <tr className="border">
-            <th className="border p-2">Input</th>
-            <th className="border p-2">Select</th>
-          </tr>
-        </thead>
-
-        <tbody>
-          {fields.map((f, i) => (
-            <tr key={i} className="border">
-              <td className="border p-2">{f.input}</td>
-              <td className="border p-2">{f.select}</td>
+      <h3 className="mt-6 font-semibold text-lg">Form State Table</h3>
+      <div className="overflow-x-auto mt-2">
+        <table className="min-w-full border border-gray-300 dark:border-gray-700 rounded-lg overflow-hidden">
+          <thead className="bg-gray-100 dark:bg-gray-800">
+            <tr>
+              <th className="border p-2 text-left">Input</th>
+              <th className="border p-2 text-left">Select</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {fields.map((f, i) => (
+              <tr key={i} className="even:bg-gray-50 dark:even:bg-gray-900">
+                <td className="border  text-sm sm:text-base p-2">{f.input}</td>
+                <td className="border  text-sm sm:text-base p-2">{f.select}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }
