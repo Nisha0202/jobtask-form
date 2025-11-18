@@ -13,6 +13,7 @@ type Field = {
 export default function Form() {
   const [fields, setFields] = useState<Field[]>([{ input: "", select: "" }]);
   const [errors, setErrors] = useState<any>({});
+  const [submittedFields, setSubmittedFields] = useState<Field[]>([]);
 
   const handleChange = (index: number, field: keyof Field, value: string) => {
     const updated = [...fields];
@@ -33,6 +34,9 @@ export default function Form() {
 
     if (Object.keys(newErrors).length === 0) {
       toast.success("Form submitted successfully!");
+      setSubmittedFields([...submittedFields, ...fields]);
+
+      setFields([{ input: "", select: "" }]);
     } else {
       toast.error("Please fill all required fields");
     }
@@ -109,10 +113,10 @@ export default function Form() {
             </tr>
           </thead>
           <tbody>
-            {fields.map((f, i) => (
+            {submittedFields.map((f, i) => (
               <tr key={i} className="even:bg-gray-50 dark:even:bg-gray-900">
-                <td className="border  text-sm sm:text-base p-2">{f.input}</td>
-                <td className="border  text-sm sm:text-base p-2">{f.select}</td>
+                <td className="border text-sm sm:text-base p-2">{f.input}</td>
+                <td className="border text-sm sm:text-base p-2">{f.select}</td>
               </tr>
             ))}
           </tbody>
