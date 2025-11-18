@@ -44,7 +44,7 @@ export default function Form() {
   return (
     <div className="p-6 max-w-2xl mx-auto">
       <h2 className="text-2xl font-bold mb-4 text-center">Form</h2>
-      <form onSubmit={handleSubmit} className="space-y-4 bg-white dark:bg-gray-900 p-6 rounded-lg shadow-md">
+      <form onSubmit={handleSubmit} className="space-y-4 bg-white dark:bg-gray-900 p-6 sm:p-8 rounded-md border">
         {fields.map((f, i) => (
           <div key={i} className="flex flex-wrap md:flex-nowrap items-start gap-3">
             <div className="flex-1">
@@ -99,9 +99,9 @@ export default function Form() {
         </div>
       </form>
 
-      <h3 className="mt-6 font-semibold text-lg">Form State Table</h3>
+      <h3 className="mt-8 sm:mt-12 font-medium text-lg">Form State Table</h3>
       <div className="overflow-x-auto mt-2">
-        <table className="min-w-full border border-gray-300 dark:border-gray-700 rounded-lg overflow-hidden">
+        <table className="min-w-full border border-gray-300 dark:border-gray-700 rounded-md overflow-hidden">
           <thead className="bg-gray-100 dark:bg-gray-800">
             <tr>
               <th className="border p-2 text-left">Input</th>
